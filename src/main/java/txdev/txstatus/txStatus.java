@@ -7,10 +7,12 @@ import txdev.txapibukkit.api.Mensagem;
 import txdev.txstatus.commands.Atributos;
 import txdev.txstatus.commands.VerAtributos;
 import txdev.txstatus.commands.txAtributos;
+import txdev.txstatus.commands.txEquipamento;
 import txdev.txstatus.config.Config;
 import txdev.txstatus.database.Database;
 import txdev.txstatus.database.PlayerData;
 import txdev.txstatus.events.Damage;
+import txdev.txstatus.events.ItemHeld;
 import txdev.txstatus.events.PlayerJoin;
 import txdev.txstatus.events.PlayerQuit;
 import txdev.txstatus.gui.AtributosGUI;
@@ -49,11 +51,15 @@ public class txStatus extends JavaPlugin {
         getCommand("atributos").setExecutor(new Atributos(this));
         getCommand("txatributos").setExecutor(new txAtributos(this));
         getCommand("veratributos").setExecutor(new VerAtributos(this));
+        getCommand("txequipamento").setExecutor(new txEquipamento(this));
+
 
         Bukkit.getPluginManager().registerEvents(new Damage(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuit(this), this);
         Bukkit.getPluginManager().registerEvents(new AtributosGUI(this), this);
+        Bukkit.getPluginManager().registerEvents(new ItemHeld(this), this);
+
 
         Bukkit.getConsoleSender().sendMessage(Mensagem.formatar("&e------ txStatus ------"));
         Bukkit.getConsoleSender().sendMessage(Mensagem.formatar("&eHabilitado com sucesso!"));

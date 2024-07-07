@@ -2,7 +2,7 @@ package txdev.txstatus.database;
 
 import java.util.UUID;
 
-public class PlayerData {
+public class PlayerData implements Cloneable{
 
     private final UUID uuid;
     private String nick;
@@ -95,5 +95,14 @@ public class PlayerData {
 
     private void atualizarDefesaTotal() {
         this.defesaTotal = this.defesaBase + (this.defesaBase * (this.amplificacaoDefesa / 100));
+    }
+
+    @Override
+    public PlayerData clone() { // Sobrescrever o método clone
+        try {
+            return (PlayerData) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(); // Nunca deve acontecer, já que implementamos Cloneable
+        }
     }
 }

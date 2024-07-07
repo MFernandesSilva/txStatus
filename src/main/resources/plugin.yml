@@ -14,7 +14,10 @@ commands:
     description: Exibe os atributos de um jogador (apenas para admins).
     usage: /veratributos <jogador>
     permission: txstatus.admin
-
+  txequipamento:
+    description: Cria um equipamento personalizado (apenas para admins).
+    usage: /txequipamento <espada/capacete/peitoral/calca/botas> <nome> <danobase> <ampdano> <defesabase> <ampdefesa>
+    permission: txstatus.admin
 permissions:
   txstatus.admin:
     description: Permite usar comandos de administração do plugin.
