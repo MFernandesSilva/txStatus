@@ -35,13 +35,17 @@ public class txEquipamento implements CommandExecutor {
 
         String tipoEquipamento = args[0].toLowerCase();
         String nome = args[1];
-        double danoBase, ampDano, defesaBase, ampDefesa;
+        double danoBase, ampDano, defesaBase, ampDefesa, danoBaselore, ampDanolore, defesaBaselore, ampDefesalore;
 
         try {
             danoBase = Double.parseDouble(args[2]);
             ampDano = Double.parseDouble(args[3]);
             defesaBase = Double.parseDouble(args[4]);
             ampDefesa = Double.parseDouble(args[5]);
+            danoBaselore = Double.parseDouble(args[2]);
+            ampDanolore = Double.parseDouble(args[3]);
+            defesaBaselore = Double.parseDouble(args[4]);
+            ampDefesalore = Double.parseDouble(args[5]);
         } catch (NumberFormatException e) {
             sender.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + "&cOs valores de atributos devem ser números."));
             return true;
@@ -71,6 +75,12 @@ public class txEquipamento implements CommandExecutor {
 
         ItemStack equipamento = new Item(material, 1, (short) 0)
                 .setName(ChatColor.translateAlternateColorCodes('&', nome))
+                .setLore(Arrays.asList(
+                        Mensagem.formatar("&7Dano Base: &c" + danoBaselore),
+                        Mensagem.formatar("&7Amplificador de Dano: &c" + ampDanolore + "%"),
+                        Mensagem.formatar("&7Defesa Base: &a" + defesaBaselore),
+                        Mensagem.formatar("&7Amplificador de Defesa: &a" + ampDefesalore + "%")
+                ))
                 .setUnbreakable(true)
                 .setNBT("danoBase", danoBase)
                 .setNBT("ampDano", ampDano)
