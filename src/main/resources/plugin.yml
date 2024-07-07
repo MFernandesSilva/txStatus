@@ -1,0 +1,21 @@
+name: txStatus
+version: 1.0.0-SNAPSHOT
+main: txdev.txstatus.txStatus
+
+commands:
+  atributos:
+    description: Mostra seus atributos.
+    usage: /atributos
+  txatributos:
+    description: Gerencia os atributos de um jogador (apenas para admins).
+    usage: /txatributos <add/remove/set> <atributo> <quantidade> <jogador>
+    permission: txstatus.admin
+  veratributos:
+    description: Exibe os atributos de um jogador (apenas para admins).
+    usage: /veratributos <jogador>
+    permission: txstatus.admin
+
+permissions:
+  txstatus.admin:
+    description: Permite usar comandos de administração do plugin.
+    default: op
