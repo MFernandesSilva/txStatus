@@ -11,10 +11,7 @@ import txdev.txstatus.commands.txEquipamento;
 import txdev.txstatus.config.Config;
 import txdev.txstatus.database.Database;
 import txdev.txstatus.database.PlayerData;
-import txdev.txstatus.events.Damage;
-import txdev.txstatus.events.ItemHeld;
-import txdev.txstatus.events.PlayerJoin;
-import txdev.txstatus.events.PlayerQuit;
+import txdev.txstatus.events.*;
 import txdev.txstatus.gui.AtributosGUI;
 
 import java.sql.SQLException;
