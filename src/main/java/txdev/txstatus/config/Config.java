@@ -32,11 +32,11 @@ public class Config {
     }
 
     public String getMensagemAtributos() {
-        return config.getString("mensagens.atributos", "&aSeus atributos foram atualizados!");
+        return config.getString("mensagens.atributos", " &aSeus atributos foram atualizados!");
     }
 
     public String getMensagemErroAtributos() {
-        return config.getString("mensagens.erro_atributos", "&cErro ao atualizar seus atributos.");
+        return config.getString("mensagens.erro_atributos", " &cErro ao atualizar seus atributos.");
     }
 
     public String getMensagemVerAtributos() {
@@ -51,22 +51,22 @@ public class Config {
     }
 
     public String getMensagemErroVerAtributos() {
-        return config.getString("mensagens.erro_ver_atributos", "&cJogador não encontrado ou sem atributos.");
+        return config.getString("mensagens.erro_ver_atributos", " &cJogador não encontrado ou sem atributos.");
     }
 
     public String getMensagemAtributosAlterados() {
-        return config.getString("mensagens.atributos_alterados", "&aVocê alterou os atributos de &e%jogador%&a.");
+        return config.getString("mensagens.atributos_alterados", " &aVocê alterou os atributos de &e%jogador%&a.");
     }
 
     public String getMensagemSeusAtributosAlterados() {
-        return config.getString("mensagens.seus_atributos_alterados", "&aSeus atributos foram alterados por &e%staff%&a.");
+        return config.getString("mensagens.seus_atributos_alterados", " &aSeus atributos foram alterados por &e%staff%&a.");
     }
 
     public String getMensagemErroAtributosAlterados() {
-        return config.getString("mensagens.erro_atributos_alterados", "&cErro ao alterar os atributos do jogador.");
+        return config.getString("mensagens.erro_atributos_alterados", " &cErro ao alterar os atributos do jogador.");
     }
 
     public String getMensagemUsoTxAtributos() {
-        return config.getString("mensagens.uso_txatributos", "&cUso: /txatributos <add/remove/set> <atributo> <quantidade> <jogador>");
+        return config.getString("mensagens.uso_txatributos", " &cUso: /txatributos <add/remove/set> <atributo> <quantidade> <jogador>");
     }
 }

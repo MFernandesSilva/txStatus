@@ -29,7 +29,7 @@ public class txEquipamento implements CommandExecutor {
         }
 
         if (args.length != 6) {
-            sender.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + "&cUso: /txequipamento <espada/capacete/peitoral/calca/botas> <nome> <danobase> <ampdano> <defesabase> <ampdefesa>"));
+            sender.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + " &cUso: /txequipamento <espada/capacete/peitoral/calca/botas> <nome> <danobase> <ampdano> <defesabase> <ampdefesa>"));
             return true;
         }
 
@@ -47,7 +47,7 @@ public class txEquipamento implements CommandExecutor {
             defesaBaselore = Double.parseDouble(args[4]);
             ampDefesalore = Double.parseDouble(args[5]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + "&cOs valores de atributos devem ser números."));
+            sender.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + " &cOs valores de atributos devem ser números."));
             return true;
         }
 
@@ -69,7 +69,7 @@ public class txEquipamento implements CommandExecutor {
                 material = Material.DIAMOND_BOOTS;
                 break;
             default:
-                sender.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + "&cTipo de equipamento inválido."));
+                sender.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + " &cTipo de equipamento inválido."));
                 return true;
         }
 
@@ -91,9 +91,9 @@ public class txEquipamento implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             player.getInventory().addItem(equipamento);
-            player.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + "&aEquipamento criado com sucesso!"));
+            player.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + " &aEquipamento criado com sucesso!"));
         } else {
-            sender.sendMessage(Mensagem.formatar("&cEste comando só pode ser executado por jogadores."));
+            sender.sendMessage(Mensagem.formatar(" &cEste comando só pode ser executado por jogadores."));
         }
 
         return true;

@@ -25,13 +25,13 @@ public class VerAtributos implements CommandExecutor {
         }
 
         if (args.length != 1) {
-            sender.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + "&cUso: /veratributos <jogador>"));
+            sender.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + " &cUso: /veratributos <jogador>"));
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + "&cJogador não encontrado."));
+            sender.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + " &cJogador não encontrado."));
             return true;
         }
 

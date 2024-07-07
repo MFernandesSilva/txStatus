@@ -6,6 +6,8 @@ commands:
   atributos:
     description: Mostra seus atributos.
     usage: /atributos
+    aliases:
+      - status
   txatributos:
     description: Gerencia os atributos de um jogador (apenas para admins).
     usage: /txatributos <add/remove/set> <atributo> <quantidade> <jogador>

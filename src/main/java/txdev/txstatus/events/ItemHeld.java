@@ -1,6 +1,5 @@
 package txdev.txstatus.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,7 +37,6 @@ public class ItemHeld implements Listener {
         PlayerData playerData = plugin.getPlayerData().get(playerUUID);
         if (playerData == null) return;
 
-        Bukkit.getLogger().info("ItemHeldEvent disparado para o jogador: " + player.getName());
 
         if (newItem != null && newItem.getType() == Material.DIAMOND_SWORD && isEquipamentoPersonalizado(newItem)) {
             handleEquipmentChange(player, playerUUID, playerData, newItem, previousItem);
@@ -77,7 +75,6 @@ public class ItemHeld implements Listener {
             double defesaBaseItem = NBT.getNBT(newItem, "defesaBase", Double.class);
             double ampDefesaItem = NBT.getNBT(newItem, "ampDefesa", Double.class);
 
-            Bukkit.getLogger().info("Atributos do novo item: danoBase=" + danoBaseItem + ", ampDano=" + ampDanoItem + ", defesaBase=" + defesaBaseItem + ", ampDefesa=" + ampDefesaItem); // Log de depuração
 
             if (!originalAttributes.containsKey(playerUUID)) {
                 originalAttributes.put(playerUUID, playerData.clone());
@@ -91,7 +88,6 @@ public class ItemHeld implements Listener {
 
             aplicarAtributosItem(playerData, danoBaseItem, ampDanoItem, defesaBaseItem, ampDefesaItem);
         } catch (NumberFormatException e) {
-            Bukkit.getLogger().warning("Erro ao ler atributos do item: " + e.getMessage());
             player.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + "&cEste item não é um equipamento válido."));
         }
     }

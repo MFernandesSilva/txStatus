@@ -13,7 +13,9 @@ import txdev.txapibukkit.api.Mensagem;
 import txdev.txstatus.database.PlayerData;
 import txdev.txstatus.txStatus;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class AtributosGUI implements Listener {
 
@@ -30,7 +32,7 @@ public class AtributosGUI implements Listener {
             return;
         }
 
-        Inventory gui = Inventario.criarInventario(9, Mensagem.formatar("&cATRIBUTOS"));
+        Inventory gui = Inventario.criarInventario(54, Mensagem.formatar("             &c&lATRIBUTOS"));
 
         // Itens da GUI
         ItemStack espada = new Item(Material.DIAMOND_SWORD, 1, (short) 0)
@@ -53,15 +55,23 @@ public class AtributosGUI implements Listener {
                 .setUnbreakable(true)
                 .getIs();
 
-        Inventario.adicionarItem(gui, espada, 3);
-        Inventario.adicionarItem(gui, peitoral, 5);
+        ItemStack video = new Item(Material.STAINED_GLASS_PANE, 1, (short) 14)
+                .setName(" ")
+                .setLore(Arrays.asList(""))
+                .getIs();
+
+        for (int slot : new int[]{0, 1, 7, 8, 9, 17, 36, 44, 45, 46, 52, 53}) {
+            Inventario.adicionarItem(gui, video, slot);
+        }
+        Inventario.adicionarItem(gui, espada, 38);
+        Inventario.adicionarItem(gui, peitoral, 42);
 
         player.openInventory(gui);
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getInventory().getTitle().equals(Mensagem.formatar("&cATRIBUTOS"))) {
+        if (event.getInventory().getTitle().equals(Mensagem.formatar("             &c&lATRIBUTOS"))) {
             event.setCancelled(true);
         }
     }
