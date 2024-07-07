@@ -28,32 +28,28 @@ public class txStatus extends JavaPlugin {
     private final Database database;
 
     public txStatus() {
-        this.config = new Config(this); // Injeção de dependência da configuração
-        this.database = new Database(this); // Injeção de dependência do banco de dados
+        this.config = new Config(this);
+        this.database = new Database(this);
     }
 
     @Override
     public void onEnable() {
         instance = this;
 
-        // Carregar configurações
         config.carregarConfiguracoes();
 
-        // Conectar ao banco de dados
         try {
             database.conectar();
         } catch (SQLException e) {
             Bukkit.getLogger().severe("Erro ao conectar ao banco de dados: " + e.getMessage());
-            getServer().getPluginManager().disablePlugin(this); // Desabilitar o plugin se a conexão falhar
+            getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
-        // Registrar comandos
         getCommand("atributos").setExecutor(new Atributos(this));
         getCommand("txatributos").setExecutor(new txAtributos(this));
         getCommand("veratributos").setExecutor(new VerAtributos(this));
 
-        // Registrar eventos
         Bukkit.getPluginManager().registerEvents(new Damage(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuit(this), this);
@@ -66,7 +62,6 @@ public class txStatus extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Desconectar do banco de dados
         database.desconectar();
 
         Bukkit.getConsoleSender().sendMessage(Mensagem.formatar("&e------ txStatus ------"));
@@ -74,7 +69,6 @@ public class txStatus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Mensagem.formatar("&e------ txStatus ------"));
     }
 
-    // Métodos para obter instância, configurações, banco de dados e mensagens
     public static txStatus getInstance() {
         return instance;
     }

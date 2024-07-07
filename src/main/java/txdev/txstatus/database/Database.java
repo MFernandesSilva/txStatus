@@ -93,7 +93,6 @@ public class Database {
                 salvarDadosJogador(playerData);
             }
 
-            // Criar uma variável local final para usar na lambda
             final PlayerData finalPlayerData = playerData;
             Bukkit.getScheduler().runTask(plugin, () -> {
                 plugin.getPlayerData().put(player.getUniqueId(), finalPlayerData);

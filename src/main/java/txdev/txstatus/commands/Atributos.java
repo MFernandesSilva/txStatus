@@ -4,7 +4,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import txdev.txapibukkit.api.DefaultMessages;
 import txdev.txapibukkit.api.Mensagem;
 import txdev.txstatus.gui.AtributosGUI;
 import txdev.txstatus.txStatus;
@@ -26,7 +25,6 @@ public class Atributos implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        // Verificar se o jogador tem os dados carregados
         if (!plugin.getPlayerData().containsKey(player.getUniqueId())) {
             player.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + " &7Seus dados ainda estão sendo carregados. Aguarde um momento."));
             return true;

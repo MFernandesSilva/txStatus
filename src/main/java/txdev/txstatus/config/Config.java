@@ -19,7 +19,6 @@ public class Config {
         config = plugin.getConfig();
     }
 
-    // Métodos para obter valores da configuração
     public String getPrefix() {
         return config.getString("prefix", "&7[&ctxStatus&7] ");
     }

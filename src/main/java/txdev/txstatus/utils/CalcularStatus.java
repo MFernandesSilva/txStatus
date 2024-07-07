@@ -1,16 +1,8 @@
 package txdev.txstatus.utils;
 
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import txdev.txstatus.database.PlayerData;
-import txdev.txstatus.txStatus;
 
 public class CalcularStatus {
-
-    // Calcula o dano final que o atacante causará na vítima
-
-
-    // Calcula e atualiza os atributos totais do jogador
     public static void calcularAtributos(PlayerData playerData) {
         if (playerData == null) {
             throw new IllegalArgumentException("Dados do jogador não podem ser nulos.");

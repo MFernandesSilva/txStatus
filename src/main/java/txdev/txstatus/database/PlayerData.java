@@ -13,7 +13,6 @@ public class PlayerData {
     private double danoTotal;
     private double defesaTotal;
 
-    // Construtor
     public PlayerData(UUID uuid, String nick, double danoBase, double defesaBase, double amplificacaoDano,
                       double amplificacaoDefesa, double danoTotal, double defesaTotal) {
         this.uuid = uuid;
@@ -26,7 +25,6 @@ public class PlayerData {
         this.defesaTotal = defesaTotal;
     }
 
-    // Getters
     public UUID getUuid() {
         return uuid;
     }
@@ -59,7 +57,6 @@ public class PlayerData {
         return defesaTotal;
     }
 
-    // Setters
     public void setNick(String nick) {
         this.nick = nick;
     }
@@ -92,7 +89,6 @@ public class PlayerData {
         this.defesaTotal = defesaTotal;
     }
 
-    // Métodos privados para atualizar os totais
     private void atualizarDanoTotal() {
         this.danoTotal = this.danoBase + (this.danoBase * (this.amplificacaoDano / 100));
     }

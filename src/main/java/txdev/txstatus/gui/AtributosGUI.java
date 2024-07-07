@@ -1,6 +1,5 @@
 package txdev.txstatus.gui;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +21,6 @@ public class AtributosGUI implements Listener {
 
     public AtributosGUI(txStatus plugin) {
         this.plugin = plugin;
-        Bukkit.getPluginManager().registerEvents(this, plugin); // Registrar o listener da GUI
     }
 
     public static void abrirGUI(Player player, txStatus plugin) {
@@ -55,9 +53,8 @@ public class AtributosGUI implements Listener {
                 .setUnbreakable(true)
                 .getIs();
 
-        // Adicionar os itens à GUI
-        Inventario.adicionarItem(gui, espada, 3); // Slot 3 (centralizado)
-        Inventario.adicionarItem(gui, peitoral, 5); // Slot 5 (centralizado)
+        Inventario.adicionarItem(gui, espada, 3);
+        Inventario.adicionarItem(gui, peitoral, 5);
 
         player.openInventory(gui);
     }
@@ -65,7 +62,7 @@ public class AtributosGUI implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().getTitle().equals(Mensagem.formatar("&cATRIBUTOS"))) {
-            event.setCancelled(true); // Impede que o jogador pegue os itens
+            event.setCancelled(true);
         }
     }
 }
