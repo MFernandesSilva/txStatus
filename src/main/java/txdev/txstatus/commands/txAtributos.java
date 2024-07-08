@@ -19,19 +19,17 @@ public class txAtributos implements CommandExecutor {
     private static final String MSG_JOGADOR_NAO_ENCONTRADO = " &cJogador não encontrado.";
     private static final String MSG_JOGADOR_SEM_ATRIBUTOS = " &cJogador não encontrado ou sem atributos.";
 
-    public txAtributos(txStatus plugin) {
-        this.plugin = plugin;
-    }
+    public txAtributos(txStatus plugin) {this.plugin = plugin;}
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("txstatus.admin")) {
-            sender.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + plugin.getMensagensPadrao().np()));
+    public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
+        if (!s.hasPermission("txstatus.admin")) {
+            s.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + plugin.getMensagensPadrao().np()));
             return true;
         }
 
         if (args.length < 4) {
-            sender.sendMessage(Mensagem.formatar(PREFIX + plugin.getConfiguracao().getMensagemUsoTxAtributos()));
+            s.sendMessage(Mensagem.formatar(PREFIX + plugin.getConfiguracao().getMensagemUsoTxAtributos()));
             return true;
         }
 
@@ -42,45 +40,45 @@ public class txAtributos implements CommandExecutor {
         try {
             quantidade = Double.parseDouble(args[2]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(Mensagem.formatar(PREFIX + MSG_QUANTIDADE_INVALIDA));
+            s.sendMessage(Mensagem.formatar(PREFIX + MSG_QUANTIDADE_INVALIDA));
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[3]);
         if (target == null) {
-            sender.sendMessage(Mensagem.formatar(PREFIX + MSG_JOGADOR_NAO_ENCONTRADO));
+            s.sendMessage(Mensagem.formatar(PREFIX + MSG_JOGADOR_NAO_ENCONTRADO));
             return true;
         }
 
         PlayerData playerData = plugin.getPlayerData().get(target.getUniqueId());
         if (playerData == null) {
-            sender.sendMessage(Mensagem.formatar(PREFIX + MSG_JOGADOR_SEM_ATRIBUTOS));
+            s.sendMessage(Mensagem.formatar(PREFIX + MSG_JOGADOR_SEM_ATRIBUTOS));
             return true;
         }
 
         switch (operacao) {
             case "add":
-                adicionarAtributo(sender, playerData, atributo, quantidade);
+                adicionarAtributo(s, playerData, atributo, quantidade);
                 break;
             case "remove":
-                removerAtributo(sender, playerData, atributo, quantidade);
+                removerAtributo(s, playerData, atributo, quantidade);
                 break;
             case "set":
-                definirAtributo(sender, playerData, atributo, quantidade);
+                definirAtributo(s, playerData, atributo, quantidade);
                 break;
             default:
-                sender.sendMessage(Mensagem.formatar(PREFIX + plugin.getConfiguracao().getMensagemUsoTxAtributos()));
+                s.sendMessage(Mensagem.formatar(PREFIX + plugin.getConfiguracao().getMensagemUsoTxAtributos()));
                 return true;
         }
 
         plugin.db().salvarDadosJogadorAsync(playerData);
-        sender.sendMessage(Mensagem.formatar(PREFIX + plugin.getConfiguracao().getMensagemAtributosAlterados().replace("%jogador%", target.getName())));
-        target.sendMessage(Mensagem.formatar(PREFIX + plugin.getConfiguracao().getMensagemSeusAtributosAlterados().replace("%staff%", sender.getName())));
+        s.sendMessage(Mensagem.formatar(PREFIX + plugin.getConfiguracao().getMensagemAtributosAlterados().replace("%jogador%", target.getName())));
+        target.sendMessage(Mensagem.formatar(PREFIX + plugin.getConfiguracao().getMensagemSeusAtributosAlterados().replace("%staff%", s.getName())));
 
         return true;
     }
 
-    private void adicionarAtributo(CommandSender sender, PlayerData playerData, String atributo, double quantidade) {
+    private void adicionarAtributo(CommandSender s, PlayerData playerData, String atributo, double quantidade) {
         switch (atributo) {
             case "danobase":
                 playerData.setDanoBase(playerData.getDanoBase() + quantidade);
@@ -95,12 +93,12 @@ public class txAtributos implements CommandExecutor {
                 playerData.setAmplificacaoDefesa(playerData.getAmplificacaoDefesa() + quantidade);
                 break;
             default:
-                sender.sendMessage(Mensagem.formatar(PREFIX + MSG_ATRIBUTO_INVALIDO));
+                s.sendMessage(Mensagem.formatar(PREFIX + MSG_ATRIBUTO_INVALIDO));
         }
         CalcularStatus.calcularAtributos(playerData);
     }
 
-    private void removerAtributo(CommandSender sender, PlayerData playerData, String atributo, double quantidade) {
+    private void removerAtributo(CommandSender s, PlayerData playerData, String atributo, double quantidade) {
         switch (atributo) {
             case "danobase":
                 playerData.setDanoBase(Math.max(0, playerData.getDanoBase() - quantidade));
@@ -115,12 +113,12 @@ public class txAtributos implements CommandExecutor {
                 playerData.setAmplificacaoDefesa(Math.max(0, playerData.getAmplificacaoDefesa() - quantidade));
                 break;
             default:
-                sender.sendMessage(Mensagem.formatar(PREFIX + MSG_ATRIBUTO_INVALIDO));
+                s.sendMessage(Mensagem.formatar(PREFIX + MSG_ATRIBUTO_INVALIDO));
         }
         CalcularStatus.calcularAtributos(playerData);
     }
 
-    private void definirAtributo(CommandSender sender, PlayerData playerData, String atributo, double quantidade) {
+    private void definirAtributo(CommandSender s, PlayerData playerData, String atributo, double quantidade) {
         switch (atributo) {
             case "danobase":
                 playerData.setDanoBase(quantidade);
@@ -135,7 +133,7 @@ public class txAtributos implements CommandExecutor {
                 playerData.setAmplificacaoDefesa(quantidade);
                 break;
             default:
-                sender.sendMessage(Mensagem.formatar(PREFIX + MSG_ATRIBUTO_INVALIDO));
+                s.sendMessage(Mensagem.formatar(PREFIX + MSG_ATRIBUTO_INVALIDO));
         }
         CalcularStatus.calcularAtributos(playerData);
     }

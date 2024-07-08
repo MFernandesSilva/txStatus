@@ -12,25 +12,23 @@ public class Atributos implements CommandExecutor {
 
     private final txStatus plugin;
 
-    public Atributos(txStatus plugin) {
-        this.plugin = plugin;
-    }
+    public Atributos(txStatus plugin) {this.plugin = plugin;}
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(Mensagem.formatar(plugin.getMensagensPadrao().cc()));
+    public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
+        if (!(s instanceof Player)) {
+            s.sendMessage(Mensagem.formatar(plugin.getMensagensPadrao().cc()));
             return true;
         }
 
-        Player player = (Player) sender;
+        Player p = (Player) s;
 
-        if (!plugin.getPlayerData().containsKey(player.getUniqueId())) {
-            player.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + " &7Seus dados ainda estão sendo carregados. Aguarde um momento."));
+        if (!plugin.getPlayerData().containsKey(p.getUniqueId())) {
+            p.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + " &7Relogue para carregar seus dados."));
             return true;
         }
 
-        AtributosGUI.abrirGUI(player, plugin);
+        AtributosGUI.abrirGUI(p, plugin);
         return true;
     }
 }

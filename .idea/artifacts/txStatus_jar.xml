@@ -5,6 +5,7 @@
       <element id="module-output" name="txStatus" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../Api's/1.7.10/sqlite-jdbc-3.46.0.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../Api's/1.7.10/txAPIBukkit.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../Api's/1.7.10/txAPIDBC.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

@@ -19,25 +19,15 @@ public class Config {
         config = plugin.getConfig();
     }
 
-    public String getPrefix() {
-        return config.getString("prefix", "&7[&ctxStatus&7] ");
-    }
+    public String getPrefix() {return config.getString("prefix", "&7[&ctxStatus&7] ");}
 
-    public double getDanoBasePadrao() {
-        return config.getDouble("atributos.dano_base_padrao", 1.0);
-    }
+    public double getDanoBasePadrao() {return config.getDouble("atributos.dano_base_padrao", 1.0);}
 
-    public double getDefesaBasePadrao() {
-        return config.getDouble("atributos.defesa_base_padrao", 0.0);
-    }
+    public double getDefesaBasePadrao() {return config.getDouble("atributos.defesa_base_padrao", 0.0);}
 
-    public String getMensagemAtributos() {
-        return config.getString("mensagens.atributos", " &aSeus atributos foram atualizados!");
-    }
+    public String getMensagemAtributos() {return config.getString("mensagens.atributos", " &aSeus atributos foram atualizados!");}
 
-    public String getMensagemErroAtributos() {
-        return config.getString("mensagens.erro_atributos", " &cErro ao atualizar seus atributos.");
-    }
+    public String getMensagemErroAtributos() {return config.getString("mensagens.erro_atributos", " &cErro ao atualizar seus atributos.");}
 
     public String getMensagemVerAtributos() {
         return config.getString("mensagens.ver_atributos",
@@ -55,11 +45,11 @@ public class Config {
     }
 
     public String getMensagemAtributosAlterados() {
-        return config.getString("mensagens.atributos_alterados", " &aVocê alterou os atributos de &e%jogador%&a.");
+        return config.getString("mensagens.atributos_alterados", " &7Você alterou os atributos de &e%jogador%&a.");
     }
 
     public String getMensagemSeusAtributosAlterados() {
-        return config.getString("mensagens.seus_atributos_alterados", " &aSeus atributos foram alterados por &e%staff%&a.");
+        return config.getString("mensagens.seus_atributos_alterados", " &7Seus atributos foram alterados por &e%staff%&a.");
     }
 
     public String getMensagemErroAtributosAlterados() {

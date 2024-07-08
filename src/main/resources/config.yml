@@ -1,19 +1,23 @@
 prefix: "&7[&ctxStatus&7] "
 
+id_gui:
+  dano: 4313
+  defesa: 4352
+
 
 
 atributos:
-  dano_base_padrao: 1.0 # Dano base padrão para novos jogadores
-  defesa_base_padrao: 0.0 # Defesa base padrão para novos jogadores
+  dano_base_padrao: 1000.0 # Dano base padrão para novos jogadores
+  defesa_base_padrao: 500.0 # Defesa base padrão para novos jogadores
 
 
 
 mensagens:
-  atributos: " &aSeus atributos foram atualizados!"
+  atributos: " &7Seus atributos foram atualizados!"
   erro_atributos: " &cErro ao atualizar seus atributos."
   ver_atributos: " &aAtributos de &e%jogador%&a:\n&7Dano Base: &c%danobase%\n&7Amplificação de Dano: &c%ampdano%&\n&7Dano Total: &c%danototal%\n&7Defesa Base: &a%defesabase%\n&7Amplificação de Defesa: &a%ampdefesa%&\n&7Defesa Total: &a%defesatotal%"
   erro_ver_atributos: " &cJogador não encontrado ou sem atributos."
-  atributos_alterados: " &aVocê alterou os atributos de &e%jogador%&a."
-  seus_atributos_alterados: " &aSeus atributos foram alterados por &e%staff%&a."
+  atributos_alterados: " &7Você alterou os atributos de &e%jogador%&7."
+  seus_atributos_alterados: " &7Seus atributos foram alterados por &e%staff%&7."
   erro_atributos_alterados: " &cErro ao alterar os atributos do jogador."
   uso_txatributos: " &cUso: /txatributos <add/remove/set> <atributo> <quantidade> <jogador>"

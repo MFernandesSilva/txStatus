@@ -98,11 +98,11 @@ public class PlayerData implements Cloneable{
     }
 
     @Override
-    public PlayerData clone() { // Sobrescrever o método clone
+    public PlayerData clone() {
         try {
             return (PlayerData) super.clone();
         } catch (CloneNotSupportedException e) {
-            throw new AssertionError(); // Nunca deve acontecer, já que implementamos Cloneable
+            throw new AssertionError();
         }
     }
 }

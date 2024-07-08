@@ -13,9 +13,7 @@ public class Database {
     private final txStatus plugin;
     private Connection conexao;
 
-    public Database(txStatus plugin) {
-        this.plugin = plugin;
-    }
+    public Database(txStatus plugin) {this.plugin = plugin;}
 
     public void conectar() throws SQLException {
         try {

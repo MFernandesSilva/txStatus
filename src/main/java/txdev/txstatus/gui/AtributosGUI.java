@@ -35,7 +35,7 @@ public class AtributosGUI implements Listener {
         Inventory gui = Inventario.criarInventario(54, Mensagem.formatar("             &c&lATRIBUTOS"));
 
         // Itens da GUI
-        ItemStack espada = new Item(Material.DIAMOND_SWORD, 1, (short) 0)
+        ItemStack espada = new Item(Material.getMaterial(plugin.getConfig().getInt("id_gui.dano")), 1, (short) 0)
                 .setName(Mensagem.formatar("&cDANO"))
                 .setLore(Arrays.asList(
                         Mensagem.formatar("&7Dano Base: &c" + playerData.getDanoBase()),
@@ -45,7 +45,7 @@ public class AtributosGUI implements Listener {
                 .setUnbreakable(true)
                 .getIs();
 
-        ItemStack peitoral = new Item(Material.DIAMOND_CHESTPLATE, 1, (short) 0)
+        ItemStack peitoral = new Item(Material.getMaterial(plugin.getConfig().getInt("id_gui.defesa")), 1, (short) 0)
                 .setName(Mensagem.formatar("&aDEFESA"))
                 .setLore(Arrays.asList(
                         Mensagem.formatar("&7Defesa Base: &a" + playerData.getDefesaBase()),

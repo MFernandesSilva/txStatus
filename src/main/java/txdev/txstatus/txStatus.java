@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class txStatus extends JavaPlugin {
+
     private Map<UUID, PlayerData> playerData = new HashMap<>();
 
     private static txStatus instance;
@@ -45,18 +46,8 @@ public class txStatus extends JavaPlugin {
             return;
         }
 
-        getCommand("atributos").setExecutor(new Atributos(this));
-        getCommand("txatributos").setExecutor(new txAtributos(this));
-        getCommand("veratributos").setExecutor(new VerAtributos(this));
-        getCommand("txequipamento").setExecutor(new txEquipamento(this));
-
-
-        Bukkit.getPluginManager().registerEvents(new Damage(this), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerJoin(this), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerQuit(this), this);
-        Bukkit.getPluginManager().registerEvents(new AtributosGUI(this), this);
-        Bukkit.getPluginManager().registerEvents(new ItemHeld(this), this);
-
+        registerCommands();
+        registerEvents();
 
         Bukkit.getConsoleSender().sendMessage(Mensagem.formatar("&e------ txStatus ------"));
         Bukkit.getConsoleSender().sendMessage(Mensagem.formatar("&eHabilitado com sucesso!"));
@@ -72,24 +63,29 @@ public class txStatus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Mensagem.formatar("&e------ txStatus ------"));
     }
 
-    public static txStatus getInstance() {
-        return instance;
+    private void registerCommands(){
+        getCommand("atributos").setExecutor(new Atributos(this));
+        getCommand("txatributos").setExecutor(new txAtributos(this));
+        getCommand("veratributos").setExecutor(new VerAtributos(this));
+        getCommand("txequipamento").setExecutor(new txEquipamento(this));
     }
 
-    public Config getConfiguracao() {
-        return config;
+    private void registerEvents(){
+        Bukkit.getPluginManager().registerEvents(new Damage(this), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerJoin(this), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerQuit(this), this);
+        Bukkit.getPluginManager().registerEvents(new AtributosGUI(this), this);
+        Bukkit.getPluginManager().registerEvents(new ItemHeld(this), this);
     }
 
-    public Database db() {
-        return database;
-    }
+    public static txStatus getInstance() {return instance;}
 
-    public Map<UUID, PlayerData> getPlayerData() {
-        return playerData;
-    }
+    public Config getConfiguracao() {return config;}
 
-    public DefaultMessages getMensagensPadrao() {
-        return new DefaultMessages();
-    }
+    public Database db() {return database;}
+
+    public Map<UUID, PlayerData> getPlayerData() {return playerData;}
+
+    public DefaultMessages getMensagensPadrao() {return new DefaultMessages();}
 
 }
