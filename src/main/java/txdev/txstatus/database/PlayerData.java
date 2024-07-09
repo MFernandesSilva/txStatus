@@ -1,5 +1,10 @@
 package txdev.txstatus.database;
 
+import txdev.txstatus.runas.Runa;
+import txdev.txstatus.runas.TipoRuna;
+
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class PlayerData implements Cloneable{
@@ -13,8 +18,10 @@ public class PlayerData implements Cloneable{
     private double danoTotal;
     private double defesaTotal;
 
+    private Map<TipoRuna, Runa> runas;
+
     public PlayerData(UUID uuid, String nick, double danoBase, double defesaBase, double amplificacaoDano,
-                      double amplificacaoDefesa, double danoTotal, double defesaTotal) {
+                      double amplificacaoDefesa, double danoTotal, double defesaTotal, Map<TipoRuna, Runa> runas) {
         this.uuid = uuid;
         this.nick = nick;
         this.danoBase = danoBase;
@@ -23,6 +30,7 @@ public class PlayerData implements Cloneable{
         this.amplificacaoDefesa = amplificacaoDefesa;
         this.danoTotal = danoTotal;
         this.defesaTotal = defesaTotal;
+        this.runas = runas;
     }
 
     public UUID getUuid() {
@@ -57,6 +65,10 @@ public class PlayerData implements Cloneable{
         return defesaTotal;
     }
 
+    public Map<TipoRuna, Runa> getRunas(){
+        return runas;
+    }
+
     public void setNick(String nick) {
         this.nick = nick;
     }
@@ -89,12 +101,20 @@ public class PlayerData implements Cloneable{
         this.defesaTotal = defesaTotal;
     }
 
+    public void setRunas(Map<TipoRuna, Runa> runas){
+        this.runas = runas;
+    }
+
     private void atualizarDanoTotal() {
         this.danoTotal = this.danoBase + (this.danoBase * (this.amplificacaoDano / 100));
     }
 
     private void atualizarDefesaTotal() {
         this.defesaTotal = this.defesaBase + (this.defesaBase * (this.amplificacaoDefesa / 100));
+    }
+
+    public void adicionarRuna(Runa runa){
+        this.runas = runas;
     }
 
     @Override

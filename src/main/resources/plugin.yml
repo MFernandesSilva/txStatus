@@ -20,6 +20,18 @@ commands:
     description: Cria um equipamento personalizado (apenas para admins).
     usage: /txequipamento <espada/capacete/peitoral/calca/botas> <nome> <danobase> <ampdano> <defesabase> <ampdefesa>
     permission: txstatus.admin
+  txrunas:
+    description: Define o nível e subnível de uma runa para um jogador (apenas para admins).
+    usage: /txrunas <tipo> <nivel> <subnivel> <jogador>
+    permission: txstatus.admin
+  txrunasupgrade:
+    description: Aumenta o subnível de uma runa de um jogador em 1 (apenas para admins).
+    usage: /txrunasupgrade <tipo> <jogador>
+    permission: txstatus.admin
+  txrunasromper:
+    description: Rompe uma runa para o próximo nível (apenas para admins).
+    usage: /txrunasromper <tipo> <jogador>
+    permission: txstatus.admin
 permissions:
   txstatus.admin:
     description: Permite usar comandos de administração do plugin.

@@ -2,18 +2,44 @@ package txdev.txstatus.database;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import txdev.txstatus.runas.Runa;
+import txdev.txstatus.runas.TipoRuna;
 import txdev.txstatus.txStatus;
 
 import java.io.File;
 import java.sql.*;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class Database {
 
+    private static final String CRIAR_TABELA_SQL = "CREATE TABLE IF NOT EXISTS player_status (" +
+            "uuid VARCHAR(36) PRIMARY KEY," +
+            "nick VARCHAR(16) NOT NULL," +
+            "danobase DOUBLE," +
+            "defesabase DOUBLE," +
+            "ampdano DOUBLE," +
+            "ampdefesa DOUBLE," +
+            "danototal DOUBLE," +
+            "defesatotal DOUBLE," +
+            "runa_dano_nivel INTEGER DEFAULT 0," +
+            "runa_dano_subnivel INTEGER DEFAULT 0," +
+            "runa_defesa_nivel INTEGER DEFAULT 0," +
+            "runa_defesa_subnivel INTEGER DEFAULT 0," +
+            "runa_amplificacao_nivel INTEGER DEFAULT 0," +
+            "runa_amplificacao_subnivel INTEGER DEFAULT 0" +
+            ")";
+
+    private static final String SALVAR_DADOS_SQL = "INSERT OR REPLACE INTO player_status (uuid, nick, danobase, defesabase, ampdano, ampdefesa, danototal, defesatotal, runa_dano_nivel, runa_dano_subnivel, runa_defesa_nivel, runa_defesa_subnivel, runa_amplificacao_nivel, runa_amplificacao_subnivel) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String CARREGAR_DADOS_SQL = "SELECT nick, danobase, defesabase, ampdano, ampdefesa, danototal, defesatotal, runa_dano_nivel, runa_dano_subnivel, runa_defesa_nivel, runa_defesa_subnivel, runa_amplificacao_nivel, runa_amplificacao_subnivel FROM player_status WHERE uuid = ?";
+
     private final txStatus plugin;
     private Connection conexao;
 
-    public Database(txStatus plugin) {this.plugin = plugin;}
+    public Database(txStatus plugin) {
+        this.plugin = plugin;
+    }
 
     public void conectar() throws SQLException {
         try {
@@ -44,24 +70,13 @@ public class Database {
 
     private void criarTabela() throws SQLException {
         try (Statement stmt = conexao.createStatement()) {
-            String sql = "CREATE TABLE IF NOT EXISTS player_status (" +
-                    "uuid VARCHAR(36) PRIMARY KEY," +
-                    "nick VARCHAR(16) NOT NULL," +
-                    "danobase DOUBLE," +
-                    "defesabase DOUBLE," +
-                    "ampdano DOUBLE," +
-                    "ampdefesa DOUBLE," +
-                    "danototal DOUBLE," +
-                    "defesatotal DOUBLE" +
-                    ")";
-            stmt.executeUpdate(sql);
+            stmt.executeUpdate(CRIAR_TABELA_SQL);
         }
     }
 
     public void salvarDadosJogador(PlayerData playerData) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            String sql = "INSERT OR REPLACE INTO player_status (uuid, nick, danobase, defesabase, ampdano, ampdefesa, danototal, defesatotal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+            try (PreparedStatement pstmt = conexao.prepareStatement(SALVAR_DADOS_SQL)) {
                 pstmt.setString(1, playerData.getUuid().toString());
                 pstmt.setString(2, playerData.getNick());
                 pstmt.setDouble(3, playerData.getDanoBase());
@@ -70,6 +85,14 @@ public class Database {
                 pstmt.setDouble(6, playerData.getAmplificacaoDefesa());
                 pstmt.setDouble(7, playerData.getDanoTotal());
                 pstmt.setDouble(8, playerData.getDefesaTotal());
+
+                // Salvar dados das runas
+                int index = 9;
+                for (Runa runa : playerData.getRunas().values()) {
+                    pstmt.setInt(index++, runa.getNivel());
+                    pstmt.setInt(index++, runa.getSubnivel());
+                }
+
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 Bukkit.getLogger().severe("Erro ao salvar dados do jogador: " + e.getMessage());
@@ -80,16 +103,47 @@ public class Database {
     public void carregarDadosJogadorAsync(Player player) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             PlayerData playerData = carregarDadosJogador(player.getUniqueId());
+
             if (playerData == null) {
+                // Cria um novo PlayerData com valores padrão se não existir no banco
+                Map<TipoRuna, Runa> runas = new EnumMap<>(TipoRuna.class);
+                for (TipoRuna tipoRuna : TipoRuna.values()) {
+                    runas.put(tipoRuna, new Runa(tipoRuna, 0, 0)); // Nível 0 para runas não encontradas
+                }
+
                 playerData = new PlayerData(
                         player.getUniqueId(),
                         player.getName(),
                         plugin.getConfiguracao().getDanoBasePadrao(),
                         plugin.getConfiguracao().getDefesaBasePadrao(),
-                        0, 0, 0, 0
+                        0, 0, 0, 0,
+                        runas
                 );
-                salvarDadosJogador(playerData);
+                salvarDadosJogador(playerData); // Salva os dados iniciais do novo jogador
             }
+
+            // Carregar dados das runas do banco de dados
+            Map<TipoRuna, Runa> runas = new EnumMap<>(TipoRuna.class);
+            try (PreparedStatement pstmt = conexao.prepareStatement(CARREGAR_DADOS_SQL)) {
+                pstmt.setString(1, player.getUniqueId().toString());
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        for (TipoRuna tipo : TipoRuna.values()) {
+                            int nivel = rs.getInt("runa_" + tipo.toString().toLowerCase() + "_nivel");
+                            int subnivel = rs.getInt("runa_" + tipo.toString().toLowerCase() + "_subnivel");
+                            runas.put(tipo, new Runa(tipo, nivel, subnivel));
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                Bukkit.getLogger().severe("Erro ao carregar runas do jogador: " + e.getMessage());
+            }
+
+            // Certificar que todas as runas existem no mapa
+            for (TipoRuna tipo : TipoRuna.values()) {
+                runas.put(tipo, runas.getOrDefault(tipo, new Runa(tipo, 0, 0))); // Nível 0 para runas não encontradas
+            }
+            playerData.setRunas(runas);
 
             final PlayerData finalPlayerData = playerData;
             Bukkit.getScheduler().runTask(plugin, () -> {
@@ -98,28 +152,10 @@ public class Database {
         });
     }
 
-    public void salvarDadosJogadorAsync(PlayerData playerData) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            String sql = "INSERT OR REPLACE INTO player_status (uuid, nick, danobase, defesabase, ampdano, ampdefesa, danototal, defesatotal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
-                pstmt.setString(1, playerData.getUuid().toString());
-                pstmt.setString(2, playerData.getNick());
-                pstmt.setDouble(3, playerData.getDanoBase());
-                pstmt.setDouble(4, playerData.getDefesaBase());
-                pstmt.setDouble(5, playerData.getAmplificacaoDano());
-                pstmt.setDouble(6, playerData.getAmplificacaoDefesa());
-                pstmt.setDouble(7, playerData.getDanoTotal());
-                pstmt.setDouble(8, playerData.getDefesaTotal());
-                pstmt.executeUpdate();
-            } catch (SQLException e) {
-                Bukkit.getLogger().severe("Erro ao salvar dados do jogador: " + e.getMessage());
-            }
-        });
-    }
 
-    public PlayerData carregarDadosJogador(UUID uuid) {
-        String sql = "SELECT nick, danobase, defesabase, ampdano, ampdefesa, danototal, defesatotal FROM player_status WHERE uuid = ?";
-        try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+    // Método privado para carregar dados do jogador (com runas)
+    private PlayerData carregarDadosJogador(UUID uuid) {
+        try (PreparedStatement pstmt = conexao.prepareStatement(CARREGAR_DADOS_SQL)) {
             pstmt.setString(1, uuid.toString());
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
@@ -130,12 +166,25 @@ public class Database {
                     double ampDefesa = rs.getDouble("ampdefesa");
                     double danoTotal = rs.getDouble("danototal");
                     double defesaTotal = rs.getDouble("defesatotal");
-                    return new PlayerData(uuid, nick, danoBase, defesaBase, ampDano, ampDefesa, danoTotal, defesaTotal);
+
+                    // Carregar dados das runas
+                    Map<TipoRuna, Runa> runas = new EnumMap<>(TipoRuna.class);
+                    for (TipoRuna tipo : TipoRuna.values()) {
+                        int nivel = rs.getInt("runa_" + tipo.toString().toLowerCase() + "_nivel");
+                        int subnivel = rs.getInt("runa_" + tipo.toString().toLowerCase() + "_subnivel");
+                        runas.put(tipo, new Runa(tipo, nivel, subnivel));
+                    }
+
+                    return new PlayerData(uuid, nick, danoBase, defesaBase, ampDano, ampDefesa, danoTotal, defesaTotal, runas);
                 }
             }
         } catch (SQLException e) {
             Bukkit.getLogger().severe("Erro ao carregar dados do jogador: " + e.getMessage());
         }
-        return null;
+        return null; // Retorna null se o jogador não for encontrado
+    }
+
+    public void salvarDadosJogadorAsync(PlayerData playerData) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> salvarDadosJogador(playerData));
     }
 }

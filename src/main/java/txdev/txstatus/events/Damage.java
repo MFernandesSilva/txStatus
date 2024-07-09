@@ -21,58 +21,86 @@ public class Damage implements Listener {
     }
 
     @EventHandler
-    public void onDamage(EntityDamageByEntityEvent event) {
+    public void onDamage(EntityDamageByEntityEvent e){
         try {
-            Entity damager = event.getDamager();
-            Entity victim = event.getEntity();
-            double danoFinal = event.getDamage(); // Dano base inicial
-            boolean usarSistemaPadrao = false; // Flag para usar o sistema de dano padrão
+            Entity attacker = e.getDamager();
+            Entity victim = e.getEntity();
+            double danoFinal = e.getDamage();
+            boolean usarEvento = false;
 
-            if (damager instanceof Player) {
-                Player playerDamager = (Player) damager;
-                PlayerData damagerData = plugin.getPlayerData().get(playerDamager.getUniqueId());
+            if (attacker instanceof Player){
+                Player playerAttacker = (Player) attacker;
+                PlayerData attackerData = plugin.getPlayerData().get(playerAttacker.getUniqueId());
 
-                if (damagerData != null) {
-                    if (victim instanceof Player) {
-                        // Atacante e vítima são players
-                        PlayerData victimData = plugin.getPlayerData().get(victim.getUniqueId());
+                if (attackerData != null){
+                    if (victim instanceof Player){
+                        Player playerVictim = (Player) victim;
+                        PlayerData victimData = plugin.getPlayerData().get(playerVictim.getUniqueId());
 
-                        if (victimData != null) {
-                            danoFinal = damagerData.getDanoTotal() - victimData.getDefesaTotal();
-                            int novaVida = (int) Math.max(0, NBT.getHealth((Player)victim) - danoFinal);
-                            NBT.setHealth((Player) victim, novaVida);
+                        if (victimData != null){
+                            danoFinal = attackerData.getDanoTotal();
 
-                            // Debug (remover em produção)
-                            ((Player) victim).sendMessage(Mensagem.formatar("&7Sua vida foi ajustada para: " + novaVida));
+                            if (danoFinal > 0){
+                                danoFinal -= victimData.getDefesaTotal();;
+                            }
+
+                            if (victimData.getDefesaTotal() >= attackerData.getDanoTotal()){
+                                danoFinal = 0;
+                            }
+
+                            double maxVida = NBT.getMaxHealth(playerVictim);
+                            int novaVida = (int) Math.min(maxVida, Math.max(0, NBT.getHealth(playerVictim) - danoFinal));
+
+                            NBT.setHealth(playerVictim, novaVida);
+
+                            playerVictim.sendMessage(Mensagem.formatar("&7Sua vida foi ajustada para: " + novaVida));
+
+                            if (novaVida == 0) {
+                                playerVictim.sendMessage("&7Você foi derrotado!");
+                                playerVictim.isDead();
+                            }
                         }
                     } else {
-                        // Atacante é player, vítima é entidade/NPC
-                        danoFinal = damagerData.getDanoTotal();
-                        usarSistemaPadrao = true; // Usar sistema de dano padrão
+                        danoFinal = attackerData.getDanoTotal();
+                        usarEvento = true;
                     }
                 }
             } else if (victim instanceof Player) {
-                // Atacante é entidade/NPC, vítima é player
-                PlayerData victimData = plugin.getPlayerData().get(victim.getUniqueId());
+                Player playerVictim = (Player) victim;
+                PlayerData victimData = plugin.getPlayerData().get(playerVictim.getUniqueId());
 
-                if (victimData != null) {
-                    danoFinal = event.getDamage() - victimData.getDefesaTotal(); // Dano base - defesa do player
-                    int novaVida = (int) Math.max(0, NBT.getHealth((Player)victim) - danoFinal);
-                    NBT.setHealth((Player) victim, novaVida);
+                if (victimData != null){
+                    danoFinal = e.getDamage();
 
-                    // Debug (remover em produção)
-                    ((Player) victim).sendMessage(Mensagem.formatar("&7Sua vida foi ajustada para: " + novaVida));
+                    if (danoFinal > 0){
+                        danoFinal -= victimData.getDefesaTotal();
+                    }
+
+                    if (victimData.getDefesaTotal() >= e.getDamage()){
+                        danoFinal = 0;
+                    }
+
+                    double maxVida = NBT.getMaxHealth(playerVictim);
+                    int novaVida = (int) Math.min(maxVida, Math.max(0, NBT.getHealth(playerVictim) - danoFinal));
+
+                    NBT.setHealth(playerVictim, novaVida);
+
+                    playerVictim.sendMessage(Mensagem.formatar("&7Sua vida foi ajustada para: " + novaVida));
+
+                    if (novaVida == 0) {
+                        playerVictim.sendMessage("&7Você foi derrotado!");
+                        playerVictim.isDead();
+                    }
                 }
             }
 
-            // Aplicar dano (ou cancelar o evento se for usar o sistema NBT)
-            if (usarSistemaPadrao) {
-                event.setDamage(danoFinal);
+            if (usarEvento){
+                e.setDamage(danoFinal);
             } else {
-                event.setCancelled(true);
+                e.setCancelled(true);
             }
-        } catch (Exception e) {
-            Bukkit.getLogger().severe("Erro ao calcular o dano: " + e.getMessage());
+        } catch (Exception exception){
+            Bukkit.getLogger().severe("Erro ao calcular o dano: " + exception.getMessage());
         }
     }
 }

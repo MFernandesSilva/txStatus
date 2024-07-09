@@ -4,10 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import txdev.txapibukkit.api.DefaultMessages;
 import txdev.txapibukkit.api.Mensagem;
-import txdev.txstatus.commands.Atributos;
-import txdev.txstatus.commands.VerAtributos;
-import txdev.txstatus.commands.txAtributos;
-import txdev.txstatus.commands.txEquipamento;
+import txdev.txstatus.commands.*;
 import txdev.txstatus.config.Config;
 import txdev.txstatus.database.Database;
 import txdev.txstatus.database.PlayerData;
@@ -68,6 +65,9 @@ public class txStatus extends JavaPlugin {
         getCommand("txatributos").setExecutor(new txAtributos(this));
         getCommand("veratributos").setExecutor(new VerAtributos(this));
         getCommand("txequipamento").setExecutor(new txEquipamento(this));
+        getCommand("txrunas").setExecutor(new txRunas(this));
+        getCommand("txrunasupgrade").setExecutor(new txRunasUpgrade(this));
+        getCommand("txrunasromper").setExecutor(new txRunasRomper(this));
     }
 
     private void registerEvents(){

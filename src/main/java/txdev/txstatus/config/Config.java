@@ -6,7 +6,7 @@ import txdev.txstatus.txStatus;
 public class Config {
 
     private final txStatus plugin;
-    private FileConfiguration config;
+    public FileConfiguration config;
 
     public Config(txStatus plugin) {
         this.plugin = plugin;
