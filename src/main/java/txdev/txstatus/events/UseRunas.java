@@ -16,16 +16,12 @@ import txdev.txstatus.runas.RunaAPI;
 import txdev.txstatus.runas.TipoRuna;
 import txdev.txstatus.txStatus;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class UseRunas implements Listener {
     private final txStatus plugin;
 
     private static final String PREFIX = txStatus.getInstance().getConfiguracao().getPrefix();
 
-    private final Map<UUID, Long> cooldowns = new HashMap<>();
 
     public UseRunas(txStatus plugin) {
         this.plugin = plugin;
@@ -41,12 +37,10 @@ public class UseRunas implements Listener {
 
             String tipoRuna = NBT.getNBT(itemUsado, "tipo", String.class);
 
-            if (tipoRuna != null) {
-                if (tipoRuna.startsWith("runa")) {
-                    usarRuna(player, itemUsado, tipoRuna);
-                } else if (tipoRuna.startsWith("rompimento")) {
-                    romperRuna(player, itemUsado, tipoRuna);
-                }
+            if (tipoRuna != null && tipoRuna.startsWith("runa")) {
+                usarRuna(player, itemUsado, tipoRuna);
+            } else if (tipoRuna != null && tipoRuna.startsWith("rompimento")) {
+                romperRuna(player, itemUsado, tipoRuna);
             }
         }
     }

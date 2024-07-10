@@ -86,7 +86,6 @@ public class Database {
                 pstmt.setDouble(7, playerData.getDanoTotal());
                 pstmt.setDouble(8, playerData.getDefesaTotal());
 
-                // Salvar dados das runas
                 int index = 9;
                 for (Runa runa : playerData.getRunas().values()) {
                     pstmt.setInt(index++, runa.getNivel());
@@ -105,10 +104,9 @@ public class Database {
             PlayerData playerData = carregarDadosJogador(player.getUniqueId());
 
             if (playerData == null) {
-                // Cria um novo PlayerData com valores padrão se não existir no banco
                 Map<TipoRuna, Runa> runas = new EnumMap<>(TipoRuna.class);
                 for (TipoRuna tipoRuna : TipoRuna.values()) {
-                    runas.put(tipoRuna, new Runa(tipoRuna, 0, 0)); // Nível 0 para runas não encontradas
+                    runas.put(tipoRuna, new Runa(tipoRuna, 0, 0));
                 }
 
                 playerData = new PlayerData(
@@ -119,10 +117,9 @@ public class Database {
                         0, 0, 0, 0,
                         runas
                 );
-                salvarDadosJogador(playerData); // Salva os dados iniciais do novo jogador
+                salvarDadosJogador(playerData);
             }
 
-            // Carregar dados das runas do banco de dados
             Map<TipoRuna, Runa> runas = new EnumMap<>(TipoRuna.class);
             try (PreparedStatement pstmt = conexao.prepareStatement(CARREGAR_DADOS_SQL)) {
                 pstmt.setString(1, player.getUniqueId().toString());
@@ -139,9 +136,8 @@ public class Database {
                 Bukkit.getLogger().severe("Erro ao carregar runas do jogador: " + e.getMessage());
             }
 
-            // Certificar que todas as runas existem no mapa
             for (TipoRuna tipo : TipoRuna.values()) {
-                runas.put(tipo, runas.getOrDefault(tipo, new Runa(tipo, 0, 0))); // Nível 0 para runas não encontradas
+                runas.put(tipo, runas.getOrDefault(tipo, new Runa(tipo, 0, 0)));
             }
             playerData.setRunas(runas);
 
@@ -153,7 +149,6 @@ public class Database {
     }
 
 
-    // Método privado para carregar dados do jogador (com runas)
     private PlayerData carregarDadosJogador(UUID uuid) {
         try (PreparedStatement pstmt = conexao.prepareStatement(CARREGAR_DADOS_SQL)) {
             pstmt.setString(1, uuid.toString());
@@ -167,7 +162,6 @@ public class Database {
                     double danoTotal = rs.getDouble("danototal");
                     double defesaTotal = rs.getDouble("defesatotal");
 
-                    // Carregar dados das runas
                     Map<TipoRuna, Runa> runas = new EnumMap<>(TipoRuna.class);
                     for (TipoRuna tipo : TipoRuna.values()) {
                         int nivel = rs.getInt("runa_" + tipo.toString().toLowerCase() + "_nivel");
@@ -181,7 +175,7 @@ public class Database {
         } catch (SQLException e) {
             Bukkit.getLogger().severe("Erro ao carregar dados do jogador: " + e.getMessage());
         }
-        return null; // Retorna null se o jogador não for encontrado
+        return null;
     }
 
     public void salvarDadosJogadorAsync(PlayerData playerData) {

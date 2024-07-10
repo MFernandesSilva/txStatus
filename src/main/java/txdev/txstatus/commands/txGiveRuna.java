@@ -70,7 +70,7 @@ public class txGiveRuna implements CommandExecutor {
     }
 
     private ItemStack obterRunaPorTipoENivel(TipoRuna tipoRuna, int nivel) {
-        Runas runas = new Runas(); // Crie uma instância da classe Runas
+        Runas runas = new Runas();
         switch (tipoRuna) {
             case DANO:
                 return runas.runasDano[nivel - 1];

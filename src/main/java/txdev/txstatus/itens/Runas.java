@@ -13,7 +13,6 @@ import java.util.Arrays;
 
 public class Runas {
 
-    // Enumeração para tipos de itens de runa
     private enum TipoItemRuna {
         RUNA,
         ROMPIMENTO
@@ -22,7 +21,6 @@ public class Runas {
     private static final String CONFIG_RUNAS_ITENS = "runas.itens.";
     private static final String LVL = "Lvl";
 
-    // Arrays para nomes e lores
     private static final String[] NOMES_RUNAS = {
             "&cRuna de Dano Nível %d",
             "&aRuna de Defesa Nível %d",
@@ -38,32 +36,30 @@ public class Runas {
     private static final String LORE_RUNA = "&7Para usar este item, primeiro você tem que romper.";
     private static final String LORE_ROMPIMENTO = "&7Usado para romper nível de &cRUNA&7.";
 
-    // Método para criar uma runa
     private static ItemStack criarRuna(TipoItemRuna tipoItem, TipoRuna tipoRuna, int nivel) {
         String configPath = CONFIG_RUNAS_ITENS + tipoItem.toString().toLowerCase() + "." + tipoRuna.toString().toLowerCase() + LVL + nivel;
         int itemId = txStatus.getInstance().getConfig().getInt(configPath);
 
         Material material = Material.getMaterial(itemId);
 
-        // Verifica se o material é válido
         if (material == null || material == Material.AIR) {
             Bukkit.getLogger().severe("Material inválido para runa em '" + configPath + "': " + itemId);
-            return null; // Ou retorne um item padrão
+            return null;
         }
 
         ItemStack itemStack = new ItemStack(material, 1, (short) 0);
         ItemMeta meta = itemStack.getItemMeta();
 
-        if (meta == null) {  // Cria um novo ItemMeta se ele for nulo
+        if (meta == null) {
             meta = Bukkit.getServer().getItemFactory().getItemMeta(material);
         }
 
-        itemStack.setItemMeta(meta); // Define o ItemMeta no itemStack
+        itemStack.setItemMeta(meta);
 
         String nome = String.format(tipoItem == TipoItemRuna.RUNA ? NOMES_RUNAS[tipoRuna.ordinal()] : NOMES_ROMPIMENTOS[tipoRuna.ordinal()], nivel);
         String lore = tipoItem == TipoItemRuna.RUNA ? LORE_RUNA : LORE_ROMPIMENTO;
         String tagNBT = tipoItem.toString().toLowerCase() + tipoRuna.toString() + "Lvl" + nivel;
-        return new Item(itemStack) // Passa o itemStack com ItemMeta para o construtor da classe Item
+        return new Item(itemStack)
                 .setName(Mensagem.formatar(nome))
                 .setLore(Arrays.asList(Mensagem.formatar(lore), Mensagem.formatar("&cCertifique-se de usar o nivel certo!")))
                 .setNBT("tipo", tagNBT)

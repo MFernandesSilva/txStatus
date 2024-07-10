@@ -3,7 +3,6 @@ package txdev.txstatus.database;
 import txdev.txstatus.runas.Runa;
 import txdev.txstatus.runas.TipoRuna;
 
-import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
 

@@ -15,7 +15,6 @@ import txdev.txstatus.txStatus;
 public class txRunasUpgrade implements CommandExecutor {
 
     private final txStatus plugin;
-    private static final String PREFIX = txStatus.getInstance().getConfiguracao().getPrefix();
 
     public txRunasUpgrade(txStatus plugin) {
         this.plugin = plugin;
@@ -60,10 +59,10 @@ public class txRunasUpgrade implements CommandExecutor {
         }
 
         if (runa.getNivel() == 0) {
-            runa.setNivel(1); // Se a runa não está evoluída, define o nível para 1
-            runa.setSubnivel(1); // Define o subnível para 1
+            runa.setNivel(1);
+            runa.setSubnivel(1);
         } else if (runa.getSubnivel() < RunaAPI.getSubnivelMaximo(runa.getNivel())) {
-            runa.setSubnivel(runa.getSubnivel() + 1); // Aumenta o subnível em 1
+            runa.setSubnivel(runa.getSubnivel() + 1);
         } else {
             sender.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + "&cA runa já está no subnível máximo."));
             return true;

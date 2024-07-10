@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 import txdev.txstatus.database.PlayerData;
 import txdev.txstatus.txStatus;
 
-import java.util.Map;
 
 public class RunaAPI {
 
@@ -47,7 +46,6 @@ public class RunaAPI {
         return false;
     }
 
-    // Método para determinar o nível máximo da runa com base no nível atual (corrigido para Java 8)
     public static int getNivelMaximo(int nivelAtual) {
         switch (nivelAtual) {
             case 0:
@@ -64,7 +62,6 @@ public class RunaAPI {
         }
     }
 
-    // Método para determinar o subnível máximo da runa com base no nível atual (corrigido para Java 8)
     public static int getSubnivelMaximo(int nivelAtual) {
         switch (nivelAtual) {
             case 0:

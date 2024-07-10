@@ -65,7 +65,7 @@ public class txRunas implements CommandExecutor {
             return true;
         }
 
-        RunaAPI.adicionarRuna(target, tipoRuna, nivel, subnivel); // Adiciona ou atualiza a runa
+        RunaAPI.adicionarRuna(target, tipoRuna, nivel, subnivel);
         plugin.db().salvarDadosJogadorAsync(playerData);
         sender.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + "&aRuna definida com sucesso para &e" + target.getName() + "&a."));
 

@@ -22,7 +22,6 @@ import java.util.List;
 
 public class AtributosGUI implements Listener {
 
-    // Constantes para slots e mensagens
     private static final int SLOT_ESPADA = 38;
     private static final int SLOT_PEITORAL = 42;
     private static final int SLOT_RUNAS = 40;
@@ -33,7 +32,7 @@ public class AtributosGUI implements Listener {
 
     public AtributosGUI(txStatus plugin) {
         this.plugin = plugin;
-        Bukkit.getPluginManager().registerEvents(this, plugin); // Registrar o listener da GUI
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     public static void abrirGUI(Player player, txStatus plugin) {
@@ -45,13 +44,11 @@ public class AtributosGUI implements Listener {
 
         Inventory gui = Inventario.criarInventario(54, Mensagem.formatar(TITULO_GUI));
 
-        // Itens da GUI
         ItemStack espada = criarItemAtributo(playerData, Material.getMaterial(plugin.getConfig().getInt("id_gui.dano")), "&cDANO", "Dano Base", "Amplificação de Dano", TipoRuna.DANO);
         ItemStack peitoral = criarItemAtributo(playerData, Material.getMaterial(plugin.getConfig().getInt("id_gui.defesa")), "&aDEFESA", "Defesa Base", "Amplificação de Defesa", TipoRuna.DEFESA);
         ItemStack itemRunas = criarItemRunas(playerData, plugin);
 
-        // Vidro para preencher os espaços vazios
-        ItemStack vidro = new Item(Material.STAINED_GLASS_PANE, 1, (short) 15) // Vidro preto (cor 15)
+        ItemStack vidro = new Item(Material.STAINED_GLASS_PANE, 1, (short) 15)
                 .setName(" ")
                 .setLore(Arrays.asList(""))
                 .getIs();
@@ -67,16 +64,13 @@ public class AtributosGUI implements Listener {
         player.openInventory(gui);
     }
 
-    // Método auxiliar para criar itens de atributo (espada e peitoral)
     private static ItemStack criarItemAtributo(PlayerData playerData, Material material, String nome, String nomeAtributoBase, String nomeAmplificacao, TipoRuna tipoRuna) {
-        // Calcula os valores totais do atributo com base nas runas
-        double valorBaseTotal = playerData.getDanoBase(); // Valor base do atributo
-        double valorAmplificacaoTotal = playerData.getAmplificacaoDano(); // Valor de amplificação do atributo
+        double valorBaseTotal = playerData.getDanoBase();
+        double valorAmplificacaoTotal = playerData.getAmplificacaoDano();
 
-        // Define a cor da lore de acordo com o tipo de runa
-        String corLore = "&c"; // Vermelho para dano
+        String corLore = "&c";
         if (tipoRuna == TipoRuna.DEFESA) {
-            corLore = "&a"; // Verde para defesa
+            corLore = "&a";
             valorBaseTotal = playerData.getDefesaBase();
             valorAmplificacaoTotal = playerData.getAmplificacaoDefesa();
         }
@@ -84,7 +78,7 @@ public class AtributosGUI implements Listener {
         valorBaseTotal += playerData.getRunas().get(tipoRuna).getValorAtributo();
         valorAmplificacaoTotal += playerData.getRunas().get(TipoRuna.AMPLIFICACAO).getValorAtributo();
 
-        double valorTotal = valorBaseTotal + (valorBaseTotal * valorAmplificacaoTotal / 100); // Calcula o valor total
+        double valorTotal = valorBaseTotal + (valorBaseTotal * valorAmplificacaoTotal / 100);
 
         return new Item(material, 1, (short) 0)
                 .setName(Mensagem.formatar(nome))
@@ -97,18 +91,17 @@ public class AtributosGUI implements Listener {
                 .getIs();
     }
 
-    // Método para criar o item de runas
     private static ItemStack criarItemRunas(PlayerData playerData, txStatus plugin) {
         List<String> lore = new ArrayList<>();
         for (TipoRuna tipoRuna : TipoRuna.values()) {
             Runa runa = playerData.getRunas().get(tipoRuna);
-            if (runa.getNivel() > 0) { // Exibir apenas se a runa tiver nível maior que 0
+            if (runa.getNivel() > 0) {
                 lore.add(Mensagem.formatar("&7" + tipoRuna + ": &f" + runa.getNivel() + "-" + runa.getSubnivel()));
-                lore.add(Mensagem.formatar("&7+" + runa.getValorAtributo() + (tipoRuna == TipoRuna.AMPLIFICACAO ? "%" : ""))); // Exibir o valor com % para amplificação
-                lore.add(""); // Linha em branco para separar
+                lore.add(Mensagem.formatar("&7+" + runa.getValorAtributo() + (tipoRuna == TipoRuna.AMPLIFICACAO ? "%" : "")));
+                lore.add("");
             }
         }
-        Material material = Material.getMaterial(plugin.getConfig().getInt("id_gui.runa")); // Exemplo de material para o item de runas
+        Material material = Material.getMaterial(plugin.getConfig().getInt("id_gui.runa"));
         return new Item(material, 1, (short) 0)
                 .setName(Mensagem.formatar("&5Runas"))
                 .setLore(lore)
@@ -119,7 +112,7 @@ public class AtributosGUI implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().getTitle().equals(Mensagem.formatar(TITULO_GUI))) {
-            event.setCancelled(true); // Impede que o jogador pegue os itens
+            event.setCancelled(true);
         }
     }
 }

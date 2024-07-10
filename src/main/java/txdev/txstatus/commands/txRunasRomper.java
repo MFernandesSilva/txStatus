@@ -66,7 +66,7 @@ public class txRunasRomper implements CommandExecutor {
 
         int novoNivel = runa.getNivel() + 1;
         runa.setNivel(novoNivel);
-        runa.setSubnivel(1); // Resetar o subnível para 1 no novo nível
+        runa.setSubnivel(1);
 
         plugin.db().salvarDadosJogadorAsync(playerData);
         sender.sendMessage(Mensagem.formatar(plugin.getConfiguracao().getPrefix() + "&aRuna rompida com sucesso para &e" + target.getName() + "&a."));
