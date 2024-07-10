@@ -72,6 +72,8 @@ public class txStatus extends JavaPlugin {
         getCommand("txrunas").setExecutor(new txRunas(this));
         getCommand("txrunasupgrade").setExecutor(new txRunasUpgrade(this));
         getCommand("txrunasromper").setExecutor(new txRunasRomper(this));
+        getCommand("txgiveruna").setExecutor(new txGiveRuna(this));
+        getCommand("txgiverompimento").setExecutor(new txGiveRompimento(this));
     }
 
     private void registerEvents(){
@@ -80,6 +82,7 @@ public class txStatus extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerQuit(this), this);
         Bukkit.getPluginManager().registerEvents(new AtributosGUI(this), this);
         Bukkit.getPluginManager().registerEvents(new ItemHeld(this), this);
+        Bukkit.getPluginManager().registerEvents(new UseRunas(this), this);
     }
 
     public static txStatus getInstance() {return instance;}

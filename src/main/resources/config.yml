@@ -25,40 +25,42 @@ mensagens:
 
 
 runas:
+  # ID dos itens
   itens:
     runa:
-      danoLvl1:
-      danoLvl2:
-      danoLvl3:
-      danoLvl4:
-      danoLvl5:
-      defesaLvl1:
-      defesaLvl2:
-      defesaLvl3:
-      defesaLvl4:
-      defesaLvl5:
-      amplificacaoLvl1:
-      amplificacaoLvl2:
-      amplificacaoLvl3:
-      amplificacaoLvl4:
-      amplificacaoLvl5:
+      danoLvl1: 4587
+      danoLvl2: 4587
+      danoLvl3: 4587
+      danoLvl4: 4587
+      danoLvl5: 4587
+      defesaLvl1: 4586
+      defesaLvl2: 4586
+      defesaLvl3: 4586
+      defesaLvl4: 4586
+      defesaLvl5: 4586
+      amplificacaoLvl1: 4600
+      amplificacaoLvl2: 4600
+      amplificacaoLvl3: 4600
+      amplificacaoLvl4: 4600
+      amplificacaoLvl5: 4600
 
     rompimento:
-      danoLvl1:
-      danoLvl2:
-      danoLvl3:
-      danoLvl4:
-      danoLvl5:
-      defesaLvl1:
-      defesaLvl2:
-      defesaLvl3:
-      defesaLvl4:
-      defesaLvl5:
-      amplificacaoLvl1:
-      amplificacaoLvl2:
-      amplificacaoLvl3:
-      amplificacaoLvl4:
-      amplificacaoLvl5:
+      danoLvl1: 4595
+      danoLvl2: 4595
+      danoLvl3: 4595
+      danoLvl4: 4595
+      danoLvl5: 4595
+      defesaLvl1: 4298
+      defesaLvl2: 4298
+      defesaLvl3: 4298
+      defesaLvl4: 4298
+      defesaLvl5: 4298
+      amplificacaoLvl1: 4300
+      amplificacaoLvl2: 4300
+      amplificacaoLvl3: 4300
+      amplificacaoLvl4: 4300
+      amplificacaoLvl5: 4300
+  # Quanto cada runa da de atributo
   dano:
     lvl1:
       sublvl1: 1000

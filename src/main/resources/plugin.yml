@@ -32,6 +32,14 @@ commands:
     description: Rompe uma runa para o próximo nível (apenas para admins).
     usage: /txrunasromper <tipo> <jogador>
     permission: txstatus.admin
+  txgiverompimento:
+    description: Pega item para rompimento (apenas para admins).
+    usage: /txgiverompimento <tipo> <nivel>
+    permission: txstatus.admin
+  txgiveruna:
+    description: Pega item para upar runa (apenas para admins).
+    usage: /txgiveruna <tipo> <nivel>
+    permission: txstatus.admin
 permissions:
   txstatus.admin:
     description: Permite usar comandos de administração do plugin.
