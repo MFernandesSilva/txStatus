@@ -51,21 +51,31 @@ public class UseRunas implements Listener {
         }
     }
 
-    // Método para usar uma runa
     private void usarRuna(Player player, ItemStack itemUsado, String tipoRuna) {
         String[] partes = tipoRuna.split("Lvl");
         TipoRuna tipo = TipoRuna.valueOf(partes[0].replace("runa", "").toUpperCase());
-        int nivel = Integer.parseInt(partes[1]);
+        int nivelRunaUsada = Integer.parseInt(partes[1]);
 
-        if (temRompimento(player, tipo, nivel)) {
+        PlayerData playerData = plugin.getPlayerData().get(player.getUniqueId());
+        if (playerData == null) {
+            player.sendMessage(Mensagem.formatar(PREFIX + "&cErro ao carregar seus dados."));
+            return;
+        }
+
+        Runa runaPlayer = playerData.getRunas().get(tipo);
+        if (runaPlayer == null) {
+            player.sendMessage(Mensagem.formatar(PREFIX + "&cVocê não possui essa runa."));
+            return;
+        }
+
+        if (runaPlayer.getNivel() == nivelRunaUsada && temRompimento(player, tipo, nivelRunaUsada)) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "txrunasupgrade " + tipo + " " + player.getName());
-            itemUsado.setAmount(itemUsado.getAmount() - 1); // Remove o item da runa
+            itemUsado.setAmount(itemUsado.getAmount() - 1);
         } else {
-            player.sendMessage(Mensagem.formatar(PREFIX + "&cVocê precisa do rompimento para usar essa runa."));
+            player.sendMessage(Mensagem.formatar(PREFIX + "&cVocê precisa do rompimento correto ou não possui o nível necessário para upar essa runa."));
         }
     }
 
-    // Método para romper uma runa
     private void romperRuna(Player player, ItemStack itemUsado, String tipoRuna) {
         String[] partes = tipoRuna.split("Lvl");
         TipoRuna tipo = TipoRuna.valueOf(partes[0].replace("rompimento", "").toUpperCase());
@@ -73,26 +83,24 @@ public class UseRunas implements Listener {
 
         if (podeRomperRuna(player, tipo, nivel)) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "txrunasromper " + tipo + " " + player.getName());
-            itemUsado.setAmount(itemUsado.getAmount() - 1); // Remove o item de rompimento
+            itemUsado.setAmount(itemUsado.getAmount() - 1);
         } else {
             player.sendMessage(Mensagem.formatar(PREFIX + "&cVocê não pode romper essa runa ainda."));
         }
     }
 
-    // Método para verificar se o jogador tem o rompimento necessário
     private boolean temRompimento(Player player, TipoRuna tipo, int nivel) {
         for (ItemStack item : player.getInventory()) {
             if (item != null && item.getType() != Material.AIR) {
                 String tipoRuna = NBT.getNBT(item, "tipo", String.class);
                 if (tipoRuna != null && tipoRuna.equals("rompimento" + tipo + "Lvl" + nivel)) {
-                    return true; // Jogador tem o rompimento
+                    return true;
                 }
             }
         }
-        return false; // Jogador não tem o rompimento
+        return false;
     }
 
-    // Método para verificar se o jogador pode romper a runa
     private boolean podeRomperRuna(Player player, TipoRuna tipo, int nivel) {
         PlayerData playerData = plugin.getPlayerData().get(player.getUniqueId());
         if (playerData == null) return false;

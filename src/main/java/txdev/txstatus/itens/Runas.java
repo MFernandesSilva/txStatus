@@ -65,7 +65,7 @@ public class Runas {
         String tagNBT = tipoItem.toString().toLowerCase() + tipoRuna.toString() + "Lvl" + nivel;
         return new Item(itemStack) // Passa o itemStack com ItemMeta para o construtor da classe Item
                 .setName(Mensagem.formatar(nome))
-                .setLore(Arrays.asList(Mensagem.formatar(lore)))
+                .setLore(Arrays.asList(Mensagem.formatar(lore), Mensagem.formatar("&cCertifique-se de usar o nivel certo!")))
                 .setNBT("tipo", tagNBT)
                 .setUnbreakable(true)
                 .getIs();
