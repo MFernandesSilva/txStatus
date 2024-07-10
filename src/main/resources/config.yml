@@ -3,6 +3,7 @@ prefix: "&7[&ctxStatus&7] "
 id_gui:
   dano: 4313
   defesa: 4352
+  runa: 403
 
 
 
@@ -24,6 +25,40 @@ mensagens:
 
 
 runas:
+  itens:
+    runa:
+      danoLvl1:
+      danoLvl2:
+      danoLvl3:
+      danoLvl4:
+      danoLvl5:
+      defesaLvl1:
+      defesaLvl2:
+      defesaLvl3:
+      defesaLvl4:
+      defesaLvl5:
+      amplificacaoLvl1:
+      amplificacaoLvl2:
+      amplificacaoLvl3:
+      amplificacaoLvl4:
+      amplificacaoLvl5:
+
+    rompimento:
+      danoLvl1:
+      danoLvl2:
+      danoLvl3:
+      danoLvl4:
+      danoLvl5:
+      defesaLvl1:
+      defesaLvl2:
+      defesaLvl3:
+      defesaLvl4:
+      defesaLvl5:
+      amplificacaoLvl1:
+      amplificacaoLvl2:
+      amplificacaoLvl3:
+      amplificacaoLvl4:
+      amplificacaoLvl5:
   dano:
     lvl1:
       sublvl1: 1000

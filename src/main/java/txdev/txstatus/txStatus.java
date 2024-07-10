@@ -1,6 +1,7 @@
 package txdev.txstatus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import txdev.txapibukkit.api.DefaultMessages;
 import txdev.txapibukkit.api.Mensagem;
@@ -10,6 +11,7 @@ import txdev.txstatus.database.Database;
 import txdev.txstatus.database.PlayerData;
 import txdev.txstatus.events.*;
 import txdev.txstatus.gui.AtributosGUI;
+import txdev.txstatus.utils.CalcularStatus;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -49,6 +51,8 @@ public class txStatus extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Mensagem.formatar("&e------ txStatus ------"));
         Bukkit.getConsoleSender().sendMessage(Mensagem.formatar("&eHabilitado com sucesso!"));
         Bukkit.getConsoleSender().sendMessage(Mensagem.formatar("&e------ txStatus ------"));
+
+        Bukkit.getScheduler().runTaskTimer(this, this::atualizarAtributos, 20L, 20L);
     }
 
     @Override
@@ -87,5 +91,14 @@ public class txStatus extends JavaPlugin {
     public Map<UUID, PlayerData> getPlayerData() {return playerData;}
 
     public DefaultMessages getMensagensPadrao() {return new DefaultMessages();}
+
+    private void atualizarAtributos() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            PlayerData playerData = getPlayerData().get(player.getUniqueId());
+            if (playerData != null) {
+                CalcularStatus.calcularAtributos(playerData);
+            }
+        }
+    }
 
 }
